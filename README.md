@@ -1,8 +1,8 @@
-# maxhoesel.proxmox
+# miadabdi.proxmox
 
-![Release](https://img.shields.io/github/v/release/maxhoesel-ansible/ansible-collection-proxmox?style=flat-square)
-![Build Status](https://img.shields.io/circleci/build/github/maxhoesel-ansible/ansible-collection-proxmox/main?style=flat-square)
-![License](https://img.shields.io/github/license/maxhoesel-ansible/ansible-collection-proxmox?style=flat-square)
+![Release](https://img.shields.io/github/v/release/miadabdi/ansible-collection-proxmox?style=flat-square)
+![Build Status](https://img.shields.io/circleci/build/github/miadabdi/ansible-collection-proxmox/main?style=flat-square)
+![License](https://img.shields.io/github/license/miadabdi/ansible-collection-proxmox?style=flat-square)
 
 A collection for managing Proxmox VE and Backup Server hosts. Contains roles for managing the PVE/PBS ecosystem, as well as modules to manage PBS configuration.
 With this collection, you can:
@@ -34,15 +34,15 @@ With this collection, you can:
 
 #### Proxmox VE
 
-- [`proxmox_ha`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/proxmox_ha_module.html): Manage High Availability settings for a VM/Container
+- [`proxmox_ha`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/proxmox_ha_module.html): Manage High Availability settings for a VM/Container
 
 #### Proxmox Backup Server
 
-- [`pbs_acl`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/pbs_acl_module.html)`
-- [`pbs_datastore`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/pbs_datastore_module.html)`
-- [`pbs_directory`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/pbs_directory_module.html)`
-- [`pbs_token`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/pbs_token_module.html)`
-- [`pbs_user`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/maxhoesel/proxmox/pbs_user_module.html)`
+- [`pbs_acl`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/pbs_acl_module.html)`
+- [`pbs_datastore`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/pbs_datastore_module.html)`
+- [`pbs_directory`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/pbs_directory_module.html)`
+- [`pbs_token`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/pbs_token_module.html)`
+- [`pbs_user`](https://ansible-collection-proxmox.readthedocs.io/en/latest/collections/miadabdi/proxmox/pbs_user_module.html)`
 
 ## Installation
 
@@ -59,13 +59,13 @@ Individual roles or modules may have additional dependencies, please check their
 
 Via ansible-galaxy (recommended):
 
-`ansible-galaxy collection install maxhoesel.proxmox`
+`ansible-galaxy collection install miadabdi.proxmox`
 
-Alternatively, you can download a collection archive from a [previous release](hhttps://github.com/maxhoesel-ansible/ansible-collection-proxmox/releases).
+Alternatively, you can download a collection archive from a [previous release](hhttps://github.com/miadabdi/ansible-collection-proxmox/releases).
 
 You can also clone this repository directly if you want a slightly more up-to-date (and potentially buggy) version.
 
-`ansible-galaxy collection install git+https://github.com/maxhoesel-ansible/ansible-collection-proxmox`
+`ansible-galaxy collection install git+https://github.com/miadabdi/ansible-collection-proxmox`
 
 ## License & Author
 

@@ -1,4 +1,5 @@
 authors:
+- Miad Abdi <miad.abdi@sharifmind.ir>
 - Max Hösel <ansible@maxhoesel.de>
 build_ignore:
 - .circleci
@@ -20,19 +21,20 @@ build_ignore:
 - '**/requirements.txt'
 dependencies:
   ansible.posix: '>=1.0,<2.0'
-description: Collection dealing with Proxmox VE and PBS hosts
-issues: https://github.com/maxhoesel-ansible/ansible-collection-proxmox/issues
+description: Proxmox VE and PBS management, incl. API token auth and S3 datastore config
+issues: https://github.com/miadabdi/ansible-collection-proxmox/issues
 license:
 - GPL-3.0-or-later
 license_file: ''
 name: proxmox
-namespace: maxhoesel
+namespace: miadabdi
 readme: README.md
-repository: https://github.com/maxhoesel-ansible/ansible-collection-proxmox
+repository: https://github.com/miadabdi/ansible-collection-proxmox
 tags:
 - proxmox
 - lxc
 - kvm
 - virtualization
 - pbs
-version: 8.0.0
+- storage
+version: 1.0.0

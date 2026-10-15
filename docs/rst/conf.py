@@ -13,12 +13,12 @@ with open("../../galaxy.yml", encoding="utf-8") as f:
 version = galaxy["version"]
 release = version
 
-project = 'maxhoesel.proxmox'
+project = 'miadabdi.proxmox'
 # pylint: disable=redefined-builtin
 copyright = 'Max Hösel and Contributor'
 
-title = 'maxhoesel.proxmox Collection Documentation'
-html_short_title = 'maxhoesel.proxmox Docs'
+title = 'miadabdi.proxmox Collection Documentation'
+html_short_title = 'miadabdi.proxmox Docs'
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx_antsibull_ext']
 
