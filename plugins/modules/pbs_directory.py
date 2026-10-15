@@ -14,7 +14,7 @@ description: >
     Initialize a disk, create a FS and mount it on a path on a PBS node, or delete such a path mount.
     This module can only create mounts on unused disks and will not perform potentially destructive tasks.
 notes:
-  - This module will not add the directory as a datastore, use the M(maxhoesel.proxmox.pbs_datastore) module to do so
+  - This module will not add the directory as a datastore, use the M(miadabdi.proxmox.pbs_datastore) module to do so
   - Check mode is supported.
 options:
   disk:
@@ -60,12 +60,12 @@ options:
     default: present
 
 extends_documentation_fragment:
-  - maxhoesel.proxmox.api_connection
+  - miadabdi.proxmox.api_connection
 """
 
 EXAMPLES = r"""
 - name: Create a mount
-  maxhoesel.proxmox.pbs_directory:
+  miadabdi.proxmox.pbs_directory:
     api_user: root@pam
     api_password: secret
     api_host: helldorado

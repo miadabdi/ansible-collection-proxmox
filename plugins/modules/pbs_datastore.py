@@ -79,12 +79,12 @@ options:
     type: bool
 
 extends_documentation_fragment:
-  - maxhoesel.proxmox.api_connection
+  - miadabdi.proxmox.api_connection
 """
 
 EXAMPLES = r"""
 - name: Create/Update a datastore
-  maxhoesel.proxmox.pbs_datastore:
+  miadabdi.proxmox.pbs_datastore:
     api_user: root@pam
     api_password: secret
     api_host: helldorado

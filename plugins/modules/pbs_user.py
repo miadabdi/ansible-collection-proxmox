@@ -61,12 +61,12 @@ options:
     required: yes
 
 extends_documentation_fragment:
-  - maxhoesel.proxmox.api_connection
+  - miadabdi.proxmox.api_connection
 """
 
 EXAMPLES = r"""
 - name: Ensure that the user john@pbs exists
-  maxhoesel.proxmox.pbs_user:
+  miadabdi.proxmox.pbs_user:
     api_user: root@pam
     api_password: secret
     api_host: helldorado
@@ -78,7 +78,7 @@ EXAMPLES = r"""
     state: present
 
 - name: Ensure that the user john@smith does not exist
-  maxhoesel.proxmox.pbs_user:
+  miadabdi.proxmox.pbs_user:
     api_user: root@pam
     api_password: secret
     api_host: helldorado

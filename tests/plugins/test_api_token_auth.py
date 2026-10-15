@@ -107,3 +107,15 @@ def test_api_token_auth(collection_test_env, pbs_server_host):  # pylint: disabl
          "-e", f"ansible_python_interpreter={sys.executable}"],
         env=env,
     )
+
+
+def test_config_plane_modules(collection_test_env, pbs_server_host):  # pylint: disable=redefined-outer-name
+    """The S3/config-plane modules reconcile via token auth: namespace
+    create + idempotency, gc schedule drift + repair."""
+    env = {k: v for k, v in os.environ.items() if k != "PROXMOX_PASSWORD"}
+    collection_test_env.run(
+        ["ansible-playbook", str(Path(__file__).parent / "files" / "api_token_auth_config_plane.yml"),
+         "-e", f"pbs_api_host={pbs_server_host}",
+         "-e", f"ansible_python_interpreter={sys.executable}"],
+        env=env,
+    )

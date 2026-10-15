@@ -1,0 +1,128 @@
+---
+# Config-plane modules against a real (docker) PBS: create a local datastore
+# (S3 needs an external S3 server; namespaces/jobs/gc work on any store),
+# then namespace + gc schedule reconcile, run twice for idempotency.
+- name: Config-plane token-auth test
+  hosts: localhost
+  gather_facts: false
+  vars:
+    pbs_host: "{{ pbs_api_host.split(':')[0] }}"
+    pbs_port: "{{ pbs_api_host.split(':')[1] | default(8007) }}"
+    api: &api
+      api_host: "{{ pbs_api_host }}"
+      api_user: admin@pbs
+      api_auth_method: token
+      api_token_name: ansible
+      api_token_secret: "{{ root_token }}"
+      validate_certs: false
+  tasks:
+    - name: Fetch the root ticket via password (bootstrap)
+      ansible.builtin.uri:
+        url: "https://{{ pbs_host }}:{{ pbs_port }}/api2/json/access/ticket"
+        method: POST
+        validate_certs: false
+        status_code: 200
+        body_format: form-urlencoded
+        body:
+          username: admin@pbs
+          password: pbspbs
+      register: ticket
+
+    - name: Create the token (fresh)
+      ansible.builtin.uri:
+        url: "https://{{ pbs_host }}:{{ pbs_port }}/api2/json/access/users/admin@pbs/token/ansible"
+        method: POST
+        validate_certs: false
+        status_code: [200]
+        headers:
+          Cookie: "PBSAuthCookie={{ ticket.json.data.ticket }}"
+          CSRFPreventionToken: "{{ ticket.json.data.CSRFPreventionToken }}"
+      register: minted
+
+    - name: Grant the token admin
+      ansible.builtin.uri:
+        url: "https://{{ pbs_host }}:{{ pbs_port }}/api2/json/access/acl"
+        method: PUT
+        validate_certs: false
+        status_code: [200]
+        headers:
+          Cookie: "PBSAuthCookie={{ ticket.json.data.ticket }}"
+          CSRFPreventionToken: "{{ ticket.json.data.CSRFPreventionToken }}"
+        body_format: json
+        body: {path: /, "auth-id": "admin@pbs!ansible", "role": "Admin"}
+
+    - name: Create a local datastore for the config-plane tests
+      ansible.builtin.uri:
+        url: "https://{{ pbs_host }}:{{ pbs_port }}/api2/json/config/datastore"
+        method: POST
+        validate_certs: false
+        status_code: [200, 500]
+        headers:
+          Cookie: "PBSAuthCookie={{ ticket.json.data.ticket }}"
+          CSRFPreventionToken: "{{ ticket.json.data.CSRFPreventionToken }}"
+        body_format: json
+        body: {name: ci-store, path: /tmp/ci-store}
+
+    - name: Set the token secret fact
+      ansible.builtin.set_fact:
+        root_token: "{{ minted.json.data.value }}"
+
+    - name: Ensure a namespace exists (creates)
+      # PBS propagates the / Admin ACL to the API proxy asynchronously (~5s);
+      # retry until the token actually holds its privileges.
+      miadabdi.proxmox.pbs_namespace:
+        <<: *api
+        store: ci-store
+        name: cinamespace
+      register: ns1
+      retries: 30
+      delay: 2
+      until: not ns1.failed
+
+    - name: Ensure the same namespace (idempotent)
+      miadabdi.proxmox.pbs_namespace:
+        <<: *api
+        store: ci-store
+        name: cinamespace
+      register: ns2
+
+    - name: Namespace second run must be a no-op
+      ansible.builtin.assert:
+        that: not ns2.changed
+
+    - name: Set gc schedule
+      miadabdi.proxmox.pbs_gc_schedule:
+        <<: *api
+        store: ci-store
+        schedule: "sun 03:00"
+      register: gc1
+
+    - name: Gc schedule must have changed (default is daily)
+      ansible.builtin.assert:
+        that: gc1.changed
+
+    - name: Set gc schedule again (idempotent)
+      miadabdi.proxmox.pbs_gc_schedule:
+        <<: *api
+        store: ci-store
+        schedule: "sun 03:00"
+      register: gc2
+
+    - name: Gc second run must be a no-op
+      ansible.builtin.assert:
+        that: not gc2.changed
+
+    - name: Create verify job
+      miadabdi.proxmox.pbs_verify_job:
+        <<: *api
+        id: verify-ci-store
+        store: ci-store
+        schedule: daily
+
+    - name: Create prune job
+      miadabdi.proxmox.pbs_prune_job:
+        <<: *api
+        id: prune-ci-store
+        store: ci-store
+        schedule: daily
+        keep_daily: 7

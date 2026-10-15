@@ -32,7 +32,7 @@ class ModuleDocFragment:
           - Mutually exclusive with O(api_password). Must be set together with O(api_token_secret).
           - If O(api_auth_method) is unset and both token parameters are set, the
             C(PROXMOX_PASSWORD) environment variable is ignored.
-          - 'Note: the modules M(maxhoesel.proxmox.proxmox_ha) and M(maxhoesel.proxmox.ha)
+          - 'Note: the modules M(miadabdi.proxmox.proxmox_ha) and M(miadabdi.proxmox.ha)
             currently only support password authentication.'
         type: str
         version_added: 8.1.0

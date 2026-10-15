@@ -39,12 +39,12 @@ options:
       - absent
 
 extends_documentation_fragment:
-  - maxhoesel.proxmox.api_connection
+  - miadabdi.proxmox.api_connection
 """
 
 EXAMPLES = r"""
 - name: ACL for user john is present
-  maxhoesel.proxmox.pbs_acl:
+  miadabdi.proxmox.pbs_acl:
     api_user: root@pam
     api_password: secret
     api_host: helldorado

@@ -61,7 +61,7 @@ options:
     type: int
 
 extends_documentation_fragment:
-  - maxhoesel.proxmox.api_connection
+  - miadabdi.proxmox.api_connection
 """
 
 EXAMPLES = r"""

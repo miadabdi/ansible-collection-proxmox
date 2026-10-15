@@ -13,7 +13,7 @@
     automation_user: automation@pbs
   tasks:
     - name: Create automation user with password auth (changed)
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ admin_user }}"
         api_password: "{{ admin_password }}"
@@ -27,7 +27,7 @@
         that: user_create.changed
 
     - name: Create automation user with password auth (idempotent)
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ admin_user }}"
         api_password: "{{ admin_password }}"
@@ -41,7 +41,7 @@
         that: not user_idem.changed
 
     - name: Create API token for automation user
-      maxhoesel.proxmox.pbs_token:
+      miadabdi.proxmox.pbs_token:
         api_host: "{{ api_host }}"
         api_user: "{{ admin_user }}"
         api_password: "{{ admin_password }}"
@@ -60,7 +60,7 @@
     # PBS intersects the token's privileges with its owner's, so both need
     # the ACL for the token to be able to do anything.
     - name: Grant / Admin to automation user
-      maxhoesel.proxmox.pbs_acl:
+      miadabdi.proxmox.pbs_acl:
         api_host: "{{ api_host }}"
         api_user: "{{ admin_user }}"
         api_password: "{{ admin_password }}"
@@ -71,7 +71,7 @@
         state: present
 
     - name: Grant / Admin to automation token
-      maxhoesel.proxmox.pbs_acl:
+      miadabdi.proxmox.pbs_acl:
         api_host: "{{ api_host }}"
         api_user: "{{ admin_user }}"
         api_password: "{{ admin_password }}"
@@ -94,7 +94,7 @@
     # PBS propagates ACL changes to the API proxy asynchronously (~5s); retry
     # until the token actually holds its privileges.
     - name: Wait for token ACL to take effect
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
@@ -111,7 +111,7 @@
         that: token_user_create.changed
 
     - name: Create managed user with implicit token auth (idempotent)
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
@@ -125,7 +125,7 @@
         that: not token_user_idem.changed
 
     - name: Grant ACL with explicit api_auth_method token (changed)
-      maxhoesel.proxmox.pbs_acl:
+      miadabdi.proxmox.pbs_acl:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
@@ -142,7 +142,7 @@
         that: token_acl_create.changed
 
     - name: Grant ACL with explicit api_auth_method token (idempotent)
-      maxhoesel.proxmox.pbs_acl:
+      miadabdi.proxmox.pbs_acl:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
@@ -159,7 +159,7 @@
         that: not token_acl_idem.changed
 
     - name: Expect ambiguous-credentials failure
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_password: pbspbs
@@ -181,7 +181,7 @@
             method or set api_auth_method'
 
     - name: Expect missing-credentials failure
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         userid: "{{ target_user }}"
@@ -196,7 +196,7 @@
           - neither_fail.msg is match('No authentication credentials found.')
 
     - name: Expect token-selector conflict failure
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_password: pbspbs
@@ -217,7 +217,7 @@
             combined with password credentials'
 
     - name: Cleanup managed user
-      maxhoesel.proxmox.pbs_user:
+      miadabdi.proxmox.pbs_user:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
@@ -226,7 +226,7 @@
         state: absent
 
     - name: Cleanup managed ACL
-      maxhoesel.proxmox.pbs_acl:
+      miadabdi.proxmox.pbs_acl:
         api_host: "{{ api_host }}"
         api_user: "{{ automation_user }}"
         api_token_name: "{{ token_name }}"
